@@ -3,10 +3,8 @@
     package="vn.edu.poly.qclist">
 
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -19,7 +17,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".View.MainActivity" />
         <activity android:name=".View.LoginActivity.LoginActivity" />
-        <activity android:name=".View.QCList.QCListActivity">
+        <activity android:name=".View.QualityAnalysit.QualityAnalysitActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".View.BarcodeActivity.BarCodeActivity" />
-        <activity android:name=".View.QualityAnalysit.QualityAnalysitActivity"></activity>
+        <activity android:name=".View.QCList.QCListActivity"></activity>
     </application>
 
 </manifest>

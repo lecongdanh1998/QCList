@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:elevation="@dimen/elevation_tool_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imt_back_tool_bar_qc_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_keyboard_arrow_left_nks_36dp" />
+
+        <TextView
+            android:id="@+id/txt_tool_bar_qc_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imt_back_tool_bar_qc_list"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/txt_qc_list"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/textMedium" />
+
+        <TextView
+            android:textColor="@color/colorBlack"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="16dp"
+            android:id="@+id/txt_title_tool_bar_qc_list"
+            android:text="@string/txt_quality_analysis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</android.support.v7.widget.Toolbar>

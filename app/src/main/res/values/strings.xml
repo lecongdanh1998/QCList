@@ -28,4 +28,15 @@
     <string name="btn_sign_out">Sign Out</string>
     <string name="lbl_forgot_password">Forgot password?</string>
     <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
+    <string name="txt_qc_list">QC List</string>
+
+    <!--quality analysis activity-->
+    <string name="txt_quality_analysis">Quality Analysis</string>
+    <string name="txt_gate_id">GateID</string>
+    <string name="txt_mc">MC</string>
+    <string name="txt_moldy">Moldy</string>
+    <string name="txt_burn">Burn</string>
+    <string name="txt_odor">Odor</string>
+    <string name="txt_remark">Remark</string>
+    <string name="btn_approve">Approve</string>
 </resources>

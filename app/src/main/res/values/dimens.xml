@@ -5,4 +5,15 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="logo_w_h">100dp</dimen>
+    <dimen name="textSmall">14sp</dimen>
+    <dimen name="textMedium">16sp</dimen>
+    <dimen name="textLarge">18sp</dimen>
+    <dimen name="textLarger">22sp</dimen>
+
+    <!--custom_approve_button-->
+    <dimen name="corners_button_approve">8dp</dimen>
+    <!--quality analysis activity-->
+    <dimen name="margin_top_item_16dp">16dp</dimen>
+    <dimen name="margin_top_item_8dp">8dp</dimen>
+    <dimen name="elevation_tool_bar">2dp</dimen>
 </resources>
