@@ -12,27 +12,80 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
 
+import java.util.ArrayList;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import vn.edu.poly.qclist.Adapter.AdapterQCList;
 import vn.edu.poly.qclist.Component.BaseActivity;
 import vn.edu.poly.qclist.R;
+import vn.edu.poly.qclist.RetrofitClient.APIUtils;
+import vn.edu.poly.qclist.RetrofitClient.DataClient;
+import vn.edu.poly.qclist.RetrofitClient.Getlist_security.Product;
 import vn.edu.poly.qclist.View.QCList.QCListActivity;
+import vn.edu.poly.qclist.View.QualityAnalysit.QualityAnalysitActivity;
 
-import static android.Manifest.permission_group.CAMERA;
+import static android.Manifest.permission.CAMERA;
 
 public class BarCodeActivity extends BaseActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScanner;
-    public static final int REQUEST_CAMERA = 123456;
+    public static final int REQUEST_CAMERA = 12;
+    ArrayList<Product> arrayList;
+    int requestcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_code);
+        initLoadData();
         mScanner = new ZXingScannerView(this);
         setContentView(mScanner);
+    }
+
+    private void initLoadData() {
+        arrayList = new ArrayList<>();
+        DataClient dataClient = APIUtils.getData();
+        Call<ArrayList<Product>> callback = dataClient.ProductData();
+        callback.enqueue(new Callback<ArrayList<Product>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                if (response.body() == null) {
+                } else {
+                    arrayList.clear();
+                    for (int i = 0; i < response.body().size(); i++) {
+                        arrayList.add(new Product(response.body().get(i).getProduct(),
+                                response.body().get(i).getApprox_quantity(),
+                                response.body().get(i).getName(),
+                                response.body().get(i).getMc(),
+                                response.body().get(i).getOdor(),
+                                response.body().get(i).getSupplier_name(),
+                                response.body().get(i).getWarehouse_id(),
+                                response.body().get(i).getBurn(),
+                                response.body().get(i).getState(),
+                                response.body().get(i).getMoldy(),
+                                response.body().get(i).getEstimated_bags(),
+                                response.body().get(i).getVehicle(),
+                                response.body().get(i).getRemarks(),
+                                response.body().get(i).getWarehouse_name(),
+                                response.body().get(i).getId()
+                        ));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+                Log.d("ThrowableError", "" + t.getMessage());
+                Toast.makeText(BarCodeActivity.this, "Vui lòng kiểm tra kết nối Internet", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initPermissionCamera() {
@@ -127,10 +180,25 @@ public class BarCodeActivity extends BaseActivity implements ZXingScannerView.Re
     @Override
     public void handleResult(final Result result) {
         final String scanResult = result.getText();
-        editorResult = dataResult.edit();
-        editorResult.putString("Result",scanResult);
-        editorResult.commit();
-        intentView(QCListActivity.class);
+        for (int i = 0; i < arrayList.size(); i++) {
+            requestcode = 0;
+            if (arrayList.get(i).getName().toString().equals(scanResult)) {
+                editorResult = dataResult.edit();
+                editorResult.putString("Result", scanResult);
+                editorResult.putString("id", arrayList.get(i).getId());
+                editorResult.commit();
+                intentView(QualityAnalysitActivity.class);
+                requestcode = 1;
+                break;
+            }
+        }
+
+        if (requestcode == 0){
+            Toast.makeText(this, "Mã barcode không đúng", Toast.LENGTH_SHORT).show();
+            mScanner.resumeCameraPreview(BarCodeActivity.this);
+        }
+
+
 //        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
 //        mBuilder.setTitle("Scan result");
 //        mBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

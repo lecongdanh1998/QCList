@@ -4,22 +4,32 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import vn.edu.poly.qclist.Adapter.AdapterQCList;
 import vn.edu.poly.qclist.Component.BaseActivity;
 import vn.edu.poly.qclist.Presenter.PresenterQCList.PresenterQCList;
 import vn.edu.poly.qclist.Presenter.PresenterQCList.PresenterReponsetoViewQCList;
 import vn.edu.poly.qclist.R;
 import vn.edu.poly.qclist.View.BarcodeActivity.BarCodeActivity;
 import vn.edu.poly.qclist.View.LoginActivity.LoginActivity;
+import vn.edu.poly.qclist.View.MainActivity;
 import vn.edu.poly.qclist.View.QualityAnalysit.QualityAnalysitActivity;
 
 public class QCListActivity extends BaseActivity implements PresenterReponsetoViewQCList, View.OnClickListener {
     PresenterQCList presenterQCList;
-    Button btn_scan_barcode, txt_result;
+    Button btn_scan_barcode;
     String result = "";
-
+    ListView listView;
+    ImageView imt_back_tool_bar_qc_list;
+    TextView txt_tool_bar_qc_list,txt_title_tool_bar_qc_list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,20 +41,30 @@ public class QCListActivity extends BaseActivity implements PresenterReponsetoVi
     }
 
     private void initOnClick() {
+        imt_back_tool_bar_qc_list.setOnClickListener(this);
         btn_scan_barcode.setOnClickListener(this);
-        txt_result.setOnClickListener(this);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                presenterQCList.initOnClickData(position);
+            }
+        });
+
     }
 
     private void initData() {
-        result = dataResult.getString("Result", "");
-        if (!result.toString().equals("")) {
-            txt_result.setText(result);
-        }
         presenterQCList = new PresenterQCList(this, this);
+        presenterQCList.ProductData();
+        txt_tool_bar_qc_list.setText("Back");
+        txt_title_tool_bar_qc_list.setText("QC List");
+
     }
 
     private void initControl() {
-        txt_result = findViewById(R.id.txt_result);
+        imt_back_tool_bar_qc_list = findViewById(R.id.imt_back_tool_bar_qc_list);
+        txt_tool_bar_qc_list = findViewById(R.id.txt_tool_bar_qc_list);
+        txt_title_tool_bar_qc_list = findViewById(R.id.txt_title_tool_bar_qc_list);
+        listView = findViewById(R.id.listview_barcode);
         btn_scan_barcode = findViewById(R.id.btn_scan_barcode);
     }
 
@@ -54,18 +74,53 @@ public class QCListActivity extends BaseActivity implements PresenterReponsetoVi
             case R.id.btn_scan_barcode:
                 intentView(BarCodeActivity.class);
                 break;
-            case R.id.txt_result:
-                editorQuality = dataResultQuality.edit();
-                editorQuality.putString("Quality", result);
-                editorQuality.commit();
-                intentView(QualityAnalysitActivity.class);
+            case R.id.imt_back_tool_bar_qc_list:
+                onBackPressed();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        intentView(MainActivity.class);
     }
 
     private void intentView(Class c) {
         Intent intent = new Intent(QCListActivity.this, c);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onDataQCList(AdapterQCList adapterQCList) {
+        listView.setAdapter(adapterQCList);
+        setListViewHeightBasedOnChildren(listView);
+        adapterQCList.notifyDataSetChanged();
+    }
+
+    @Override
+    public void OnClickData() {
+        intentView(QualityAnalysitActivity.class);
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 }

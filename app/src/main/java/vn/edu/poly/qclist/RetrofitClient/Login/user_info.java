@@ -1,26 +1,36 @@
-package vn.edu.poly.qclist.RetrofitClient.User;
+package vn.edu.poly.qclist.RetrofitClient.Login;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+import java.io.Serializable;
+
+public class user_info implements Serializable {
+    @SerializedName("mobi_app_level")
+    @Expose
+    private String mobi_app_level;
     @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("email")
     @Expose
     private String email;
-    @SerializedName("mobi_app_level")
-    @Expose
-    private String mobi_app_level;
 
-    public User(String name, String email, String mobi_app_level) {
+    public user_info(String mobi_app_level, String name, String email) {
+        this.mobi_app_level = mobi_app_level;
         this.name = name;
         this.email = email;
-        this.mobi_app_level = mobi_app_level;
     }
 
-    public User() {
+    public user_info() {
+    }
+
+    public String getMobi_app_level() {
+        return mobi_app_level;
+    }
+
+    public void setMobi_app_level(String mobi_app_level) {
+        this.mobi_app_level = mobi_app_level;
     }
 
     public String getName() {
@@ -39,11 +49,5 @@ public class User {
         this.email = email;
     }
 
-    public String getMobi_app_level() {
-        return mobi_app_level;
-    }
 
-    public void setMobi_app_level(String mobi_app_level) {
-        this.mobi_app_level = mobi_app_level;
-    }
 }

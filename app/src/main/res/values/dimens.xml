@@ -9,6 +9,8 @@
     <dimen name="textMedium">16sp</dimen>
     <dimen name="textLarge">18sp</dimen>
     <dimen name="textLarger">22sp</dimen>
+    <dimen name="padding_16dp">16dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
 
     <!--custom_approve_button-->
     <dimen name="corners_button_approve">8dp</dimen>

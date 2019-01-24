@@ -24,6 +24,7 @@
             android:padding="@dimen/activity_vertical_margin">
 
             <TextView
+                android:id="@+id/nameBarcode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -49,6 +50,7 @@
                     android:textSize="@dimen/textLarge" />
 
                 <EditText
+                    android:focusable="false"
                     android:id="@+id/edt_gateId_quality_analysis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -14,6 +14,8 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_name">Fullname</string>
+    <string name="user_email">Email</string>
+    <string name="user_password">Password</string>
     <string name="btn_login">LOGIN</string>
     <string name="btn_link_to_register">Don"'"t have an account ?</string>
     <string name="btn_link_to_login">Already registered. Login Me!</string>

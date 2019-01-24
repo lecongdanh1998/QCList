@@ -8,25 +8,38 @@
     android:orientation="vertical"
     tools:context=".View.QCList.QCListActivity">
 
-    <Button
-        android:id="@+id/btn_scan_barcode"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:textSize="16sp"
-        android:background="@drawable/rounded_button_white"
-        android:text="SCAN BARCODE"
-        android:textStyle="bold"
-        android:textAllCaps="false"
-        android:textColor="#0077bb" />
-    <Button
-        android:id="@+id/txt_result"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:textSize="16sp"
-        android:background="@drawable/rounded_button_white"
-        android:textStyle="bold"
-        android:textAllCaps="false"
-        android:textColor="#0077bb" />
+    <include
+        layout="@layout/custom_toolbar_quality"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_scan_barcode"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_button_white"
+                android:text="SCAN BARCODE"
+                android:textAllCaps="false"
+                android:textColor="#0077bb"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ListView
+                android:id="@+id/listview_barcode"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                ></ListView>
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>
