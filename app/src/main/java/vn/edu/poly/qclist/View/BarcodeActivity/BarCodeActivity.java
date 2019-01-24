@@ -21,18 +21,18 @@ import vn.edu.poly.qclist.Component.BaseActivity;
 import vn.edu.poly.qclist.R;
 import vn.edu.poly.qclist.View.QCList.QCListActivity;
 
-import static android.Manifest.permission_group.CAMERA;
+import static android.Manifest.permission.CAMERA;
 
 public class BarCodeActivity extends BaseActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScanner;
-    public static final int REQUEST_CAMERA = 123456;
+    public static final int REQUEST_CAMERA = 1010;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bar_code);
         mScanner = new ZXingScannerView(this);
         setContentView(mScanner);
+        initPermissionCamera();
     }
 
     private void initPermissionCamera() {
@@ -46,7 +46,7 @@ public class BarCodeActivity extends BaseActivity implements ZXingScannerView.Re
     }
 
     private boolean checkPermission() {
-        return (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
+        return (ContextCompat.checkSelfPermission(BarCodeActivity.this, CAMERA) == PackageManager.PERMISSION_GRANTED);
     }
 
     private void requestPermission() {
@@ -54,25 +54,26 @@ public class BarCodeActivity extends BaseActivity implements ZXingScannerView.Re
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_CAMERA:
                 if (grantResults.length > 0) {
-                    boolean cameraAccept = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (cameraAccept) {
+                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted) {
                         Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             if (shouldShowRequestPermissionRationale(CAMERA)) {
-                                displayShowMessage("You need to allow access for both permission", new DialogInterface.OnClickListener() {
+                                displayShowMessage("You need allow access camera",
+                                        new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int i) {
-                                        requestPermissions(new String[]{CAMERA}, REQUEST_CAMERA);
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                       requestPermissions(new String[]{CAMERA}, REQUEST_CAMERA);
                                     }
                                 });
+                                return;
                             }
                         }
                     }
@@ -81,13 +82,18 @@ public class BarCodeActivity extends BaseActivity implements ZXingScannerView.Re
         }
     }
 
-    private void displayShowMessage(String s, DialogInterface.OnClickListener onClickListener) {
+    private void displayShowMessage(String s, DialogInterface.OnClickListener listener) {
         new AlertDialog.Builder(this)
                 .setMessage(s)
-                .setPositiveButton("Oke", onClickListener)
+                .setPositiveButton("Oke", listener)
                 .setNegativeButton("Cancel", null)
                 .create()
                 .show();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -128,7 +134,7 @@ public class BarCodeActivity extends BaseActivity implements ZXingScannerView.Re
     public void handleResult(final Result result) {
         final String scanResult = result.getText();
         editorResult = dataResult.edit();
-        editorResult.putString("Result",scanResult);
+        editorResult.putString("Result", scanResult);
         editorResult.commit();
         intentView(QCListActivity.class);
 //        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
