@@ -1,8 +1,6 @@
 package vn.edu.poly.qclist.View.BarcodeActivity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -59,7 +57,6 @@ public class BarCodeActivity extends Fragment implements ZXingScannerView.Result
     CircleImageView circleImageView_highlight;
     boolean showhide = false;
 
-    @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
