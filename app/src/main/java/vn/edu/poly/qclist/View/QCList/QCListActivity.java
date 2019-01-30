@@ -22,6 +22,7 @@ import vn.edu.poly.qclist.View.BarcodeActivity.BarCodeActivity;
 import vn.edu.poly.qclist.View.LoginActivity.LoginActivity;
 import vn.edu.poly.qclist.View.MainActivity;
 import vn.edu.poly.qclist.View.QualityAnalysit.QualityAnalysitActivity;
+import vn.edu.poly.qclist.View.TabLayoutBarCode.TabLayoutActivity;
 
 public class QCListActivity extends BaseActivity implements PresenterReponsetoViewQCList, View.OnClickListener {
     PresenterQCList presenterQCList;
@@ -72,7 +73,7 @@ public class QCListActivity extends BaseActivity implements PresenterReponsetoVi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_scan_barcode:
-                intentView(BarCodeActivity.class);
+                intentView(TabLayoutActivity.class);
                 break;
             case R.id.imt_back_tool_bar_qc_list:
                 onBackPressed();

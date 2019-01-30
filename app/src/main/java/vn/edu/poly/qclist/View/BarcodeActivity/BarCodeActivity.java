@@ -1,24 +1,38 @@
 package vn.edu.poly.qclist.View.BarcodeActivity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Camera;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.params.StreamConfigurationMap;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,19 +48,40 @@ import vn.edu.poly.qclist.View.QualityAnalysit.QualityAnalysitActivity;
 
 import static android.Manifest.permission.CAMERA;
 
-public class BarCodeActivity extends BaseActivity implements ZXingScannerView.ResultHandler {
+public class BarCodeActivity extends Fragment implements ZXingScannerView.ResultHandler, View.OnClickListener {
     private ZXingScannerView mScanner;
+    private View view;
     public static final int REQUEST_CAMERA = 12;
     ArrayList<Product> arrayList;
     int requestcode;
+    String cameraId;
+    RelativeLayout relativeLayoutbarcode, relativeLayout_highlight, relativeLayout_highlight_background;
+    CircleImageView circleImageView_highlight;
+    boolean showhide = false;
 
+    @SuppressLint("NewApi")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bar_code);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for getContext() fragment
+        view = inflater.inflate(R.layout.activity_bar_code, container, false);
+        initView();
         initLoadData();
-        mScanner = new ZXingScannerView(this);
-        setContentView(mScanner);
+        initOnClick();
+        mScanner = new ZXingScannerView(getContext());
+        relativeLayoutbarcode.addView(mScanner);
+        return view;
+    }
+
+    private void initView() {
+        relativeLayout_highlight_background = view.findViewById(R.id.relativeLayout_highlight_background);
+        circleImageView_highlight = view.findViewById(R.id.circleImageView_highlight);
+        relativeLayoutbarcode = view.findViewById(R.id.relativeLayoutbarcode);
+        relativeLayout_highlight = view.findViewById(R.id.relativeLayout_highlight);
+    }
+
+    private void initOnClick() {
+        relativeLayout_highlight.setOnClickListener(this);
     }
 
     private void initLoadData() {
@@ -83,27 +118,18 @@ public class BarCodeActivity extends BaseActivity implements ZXingScannerView.Re
             @Override
             public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
                 Log.d("ThrowableError", "" + t.getMessage());
-                Toast.makeText(BarCodeActivity.this, "Vui lòng kiểm tra kết nối Internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Vui lòng kiểm tra kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void initPermissionCamera() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkPermission()) {
-                Toast.makeText(this, "Permission granted!", Toast.LENGTH_SHORT).show();
-            } else {
-                requestPermission();
-            }
-        }
-    }
 
     private boolean checkPermission() {
-        return (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
+        return (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
     }
 
     private void requestPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);
+        ActivityCompat.requestPermissions(getActivity(), new String[]{CAMERA}, REQUEST_CAMERA);
     }
 
     @Override
@@ -115,9 +141,9 @@ public class BarCodeActivity extends BaseActivity implements ZXingScannerView.Re
                 if (grantResults.length > 0) {
                     boolean cameraAccept = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     if (cameraAccept) {
-                        Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Permission granted", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
                         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
                             if (shouldShowRequestPermissionRationale(CAMERA)) {
                                 displayShowMessage("You need to allow access for both permission", new DialogInterface.OnClickListener() {
@@ -135,7 +161,7 @@ public class BarCodeActivity extends BaseActivity implements ZXingScannerView.Re
     }
 
     private void displayShowMessage(String s, DialogInterface.OnClickListener onClickListener) {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(getContext())
                 .setMessage(s)
                 .setPositiveButton("Oke", onClickListener)
                 .setNegativeButton("Cancel", null)
@@ -144,13 +170,13 @@ public class BarCodeActivity extends BaseActivity implements ZXingScannerView.Re
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkPermission()) {
                 if (mScanner == null) {
-                    mScanner = new ZXingScannerView(this);
-                    setContentView(mScanner);
+                    mScanner = new ZXingScannerView(getContext());
+                    relativeLayoutbarcode.addView(mScanner);
                 }
                 mScanner.setResultHandler(this);
                 mScanner.startCamera();
@@ -166,13 +192,13 @@ public class BarCodeActivity extends BaseActivity implements ZXingScannerView.Re
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         mScanner.stopCamera();
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         mScanner.stopCamera();
     }
@@ -180,31 +206,33 @@ public class BarCodeActivity extends BaseActivity implements ZXingScannerView.Re
     @Override
     public void handleResult(final Result result) {
         final String scanResult = result.getText();
-        for (int i = 0; i < arrayList.size(); i++) {
-            requestcode = 0;
-            if (arrayList.get(i).getName().toString().equals(scanResult)) {
-                editorResult = dataResult.edit();
-                editorResult.putString("Result", scanResult);
-                editorResult.putString("id", arrayList.get(i).getId());
-                editorResult.commit();
-                intentView(QualityAnalysitActivity.class);
-                requestcode = 1;
-                break;
-            }
-        }
+        BaseActivity.editorResult = BaseActivity.dataResult.edit();
+        BaseActivity.editorResult.putString("Result", scanResult);
+//        editorResult.putString("id", arrayList.get(i).getId());
+        BaseActivity.editorResult.putString("id", "361");
+        BaseActivity.editorResult.commit();
+        intentView(QualityAnalysitActivity.class);
+//        for (int i = 0; i < arrayList.size(); i++) {
+//            requestcode = 0;
+//            if (arrayList.get(i).getName().toString().equals(scanResult)) {
+//
+//                requestcode = 1;
+//                break;
+//            }
+//        }
+//
+//        if (requestcode == 0){
+//            Toast.makeText(getContext(), "Mã barcode không đúng", Toast.LENGTH_SHORT).show();
+//            mScanner.resumeCameraPreview(getContext());
+//        }
 
-        if (requestcode == 0){
-            Toast.makeText(this, "Mã barcode không đúng", Toast.LENGTH_SHORT).show();
-            mScanner.resumeCameraPreview(BarCodeActivity.this);
-        }
 
-
-//        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+//        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
 //        mBuilder.setTitle("Scan result");
 //        mBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 //            @Override
 //            public void onClick(DialogInterface dialog, int i) {
-//                mScanner.resumeCameraPreview(BarCodeActivity.this);
+//                mScanner.resumeCameraPreview(getContext());
 //            }
 //        });
 //        mBuilder.setNegativeButton("Visit", new DialogInterface.OnClickListener() {
@@ -219,17 +247,40 @@ public class BarCodeActivity extends BaseActivity implements ZXingScannerView.Re
 //        mAlertDialog.show();
     }
 
-    @Override
-    public void onBackPressed() {
-        intentView(QCListActivity.class);
-        super.onBackPressed();
-    }
-
     private void intentView(Class c) {
-        Intent intent = new Intent(BarCodeActivity.this, c);
+        Intent intent = new Intent(getContext(), c);
         startActivity(intent);
-        finish();
+        getActivity().finish();
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.relativeLayout_highlight:
+                if (showhide == false) {
+                    showPin();
+                    showhide = true;
+                } else {
+                    hidePin();
+                    showhide = false;
+                }
+                break;
+        }
+    }
+
+    private void showPin() {
+        circleImageView_highlight.setImageResource(R.drawable.ic_highlight_black_24dp);
+        relativeLayout_highlight_background.setBackground(getContext().getResources().getDrawable(R.drawable.rounded_rlaaa));
+        mScanner.setFlash(true);
+
+    }
+
+    private void hidePin() {
+        circleImageView_highlight.setImageResource(R.drawable.ic_highlight_white_24dp);
+        relativeLayout_highlight_background.setBackground(getContext().getResources().getDrawable(R.drawable.rounded_rlaa));
+        mScanner.setFlash(false);
+
+    }
 
 }
