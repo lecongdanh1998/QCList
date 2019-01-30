@@ -12,7 +12,7 @@ import vn.edu.poly.qclist.R;
 import vn.edu.poly.qclist.View.LoginActivity.LoginActivity;
 import vn.edu.poly.qclist.View.QCList.QCListActivity;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener  {
     Button btn_purchase_list, btn_qc_list, btn_sign_out;
     String level = "";
 

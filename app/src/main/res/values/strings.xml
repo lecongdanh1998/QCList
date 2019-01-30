@@ -41,4 +41,10 @@
     <string name="txt_odor">Odor</string>
     <string name="txt_remark">Remark</string>
     <string name="btn_approve">Approve</string>
+
+    <!--Tablayout Barcode-->
+    <string name="txt_choviet">Chợ việt</string>
+    <string name="txt_congdong">Cộng đồng</string>
+    <string name="txt_tinhan">Tin nhắn</string>
+    <string name="txt_toi">Tôi</string>
 </resources>
