@@ -8,9 +8,19 @@
         android:lines="1"
         android:ellipsize="end"
         android:id="@+id/txt_barcode"
-        android:layout_toLeftOf="@+id/btn_details"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/details"
         android:textSize="16sp"
         android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/details"
+        android:text="Details"
+        android:lines="1"
+        android:ellipsize="end"
+        android:layout_toLeftOf="@+id/btn_details"
+        android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <ImageView

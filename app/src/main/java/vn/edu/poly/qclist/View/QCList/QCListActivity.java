@@ -30,7 +30,9 @@ public class QCListActivity extends BaseActivity implements PresenterReponsetoVi
     String result = "";
     ListView listView;
     ImageView imt_back_tool_bar_qc_list;
-    TextView txt_tool_bar_qc_list,txt_title_tool_bar_qc_list;
+    TextView txt_tool_bar_qc_list, txt_title_tool_bar_qc_list;
+    String level = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +44,13 @@ public class QCListActivity extends BaseActivity implements PresenterReponsetoVi
     }
 
     private void initOnClick() {
+        txt_tool_bar_qc_list.setOnClickListener(this);
         imt_back_tool_bar_qc_list.setOnClickListener(this);
         btn_scan_barcode.setOnClickListener(this);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 presenterQCList.initOnClickData(position);
             }
         });
@@ -57,11 +61,22 @@ public class QCListActivity extends BaseActivity implements PresenterReponsetoVi
         presenterQCList = new PresenterQCList(this, this);
         presenterQCList.ProductData();
         txt_tool_bar_qc_list.setText("Back");
-        txt_title_tool_bar_qc_list.setText("QC List");
+        level = dataResultgetMobi_app_level.getString("Level", "");
+        if (!level.toString().equals("")) {
+            if (level.equals("2.0")) {
+                txt_title_tool_bar_qc_list.setText("QC List");
+                btn_scan_barcode.setVisibility(View.VISIBLE);
+            } else if (level.equals("1.0")) {
+                txt_title_tool_bar_qc_list.setText("Purchase List");
+                btn_scan_barcode.setVisibility(View.GONE);
+            }
+        }
+
 
     }
 
     private void initControl() {
+
         imt_back_tool_bar_qc_list = findViewById(R.id.imt_back_tool_bar_qc_list);
         txt_tool_bar_qc_list = findViewById(R.id.txt_tool_bar_qc_list);
         txt_title_tool_bar_qc_list = findViewById(R.id.txt_title_tool_bar_qc_list);
@@ -76,6 +91,7 @@ public class QCListActivity extends BaseActivity implements PresenterReponsetoVi
                 intentView(TabLayoutActivity.class);
                 break;
             case R.id.imt_back_tool_bar_qc_list:
+            case R.id.txt_tool_bar_qc_list:
                 onBackPressed();
                 break;
         }

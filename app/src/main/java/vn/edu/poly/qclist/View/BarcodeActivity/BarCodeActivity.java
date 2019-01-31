@@ -14,6 +14,7 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,8 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+
+import com.google.zxing.Result;
 import com.google.zxing.Result;
 
 import java.io.IOException;
@@ -60,7 +63,7 @@ import static android.Manifest.permission.CAMERA;
 
 public class BarCodeActivity extends Fragment implements View.OnClickListener, SurfaceHolder.Callback,
         Detector.Processor<Barcode> {
-//    private ZXingScannerView mScanner;
+    //    private ZXingScannerView mScanner;
     private View view;
     public static final int REQUEST_CAMERA = 12;
     ArrayList<Product> arrayList;
@@ -84,6 +87,7 @@ public class BarCodeActivity extends Fragment implements View.OnClickListener, S
     private Camera mCamera;
     private SurfaceHolder mSurfaceHolder;
     private CameraSource.Builder mBuilder;
+    String level = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,6 +116,7 @@ public class BarCodeActivity extends Fragment implements View.OnClickListener, S
     }
 
     private void initLoadData() {
+        level = BaseActivity.dataResultgetMobi_app_level.getString("Level", "");
         arrayList = new ArrayList<>();
         DataClient dataClient = APIUtils.getData();
         Call<ArrayList<Product>> callback = dataClient.ProductData();
@@ -121,23 +126,51 @@ public class BarCodeActivity extends Fragment implements View.OnClickListener, S
                 if (response.body() == null) {
                 } else {
                     arrayList.clear();
-                    for (int i = 0; i < response.body().size(); i++) {
-                        arrayList.add(new Product(response.body().get(i).getProduct(),
-                                response.body().get(i).getApprox_quantity(),
-                                response.body().get(i).getName(),
-                                response.body().get(i).getMc(),
-                                response.body().get(i).getOdor(),
-                                response.body().get(i).getSupplier_name(),
-                                response.body().get(i).getWarehouse_id(),
-                                response.body().get(i).getBurn(),
-                                response.body().get(i).getState(),
-                                response.body().get(i).getMoldy(),
-                                response.body().get(i).getEstimated_bags(),
-                                response.body().get(i).getVehicle(),
-                                response.body().get(i).getRemarks(),
-                                response.body().get(i).getWarehouse_name(),
-                                response.body().get(i).getId()
-                        ));
+                    if (!level.toString().equals("")) {
+                        if (level.equals("2.0")) {
+                            for (int i = 0; i < response.body().size(); i++) {
+                                if (response.body().get(i).getState().equals("qc_approved")) {
+                                    arrayList.add(new Product(response.body().get(i).getProduct(),
+                                            response.body().get(i).getApprox_quantity(),
+                                            response.body().get(i).getName(),
+                                            response.body().get(i).getMc(),
+                                            response.body().get(i).getOdor(),
+                                            response.body().get(i).getSupplier_name(),
+                                            response.body().get(i).getWarehouse_id(),
+                                            response.body().get(i).getBurn(),
+                                            response.body().get(i).getState(),
+                                            response.body().get(i).getMoldy(),
+                                            response.body().get(i).getEstimated_bags(),
+                                            response.body().get(i).getVehicle(),
+                                            response.body().get(i).getRemarks(),
+                                            response.body().get(i).getWarehouse_name(),
+                                            response.body().get(i).getId()
+                                    ));
+                                }
+
+                            }
+                        } else if (level.equals("1.0")) {
+                            for (int i = 0; i < response.body().size(); i++) {
+                                if (response.body().get(i).getState().equals("pur_approved")) {
+                                    arrayList.add(new Product(response.body().get(i).getProduct(),
+                                            response.body().get(i).getApprox_quantity(),
+                                            response.body().get(i).getName(),
+                                            response.body().get(i).getMc(),
+                                            response.body().get(i).getOdor(),
+                                            response.body().get(i).getSupplier_name(),
+                                            response.body().get(i).getWarehouse_id(),
+                                            response.body().get(i).getBurn(),
+                                            response.body().get(i).getState(),
+                                            response.body().get(i).getMoldy(),
+                                            response.body().get(i).getEstimated_bags(),
+                                            response.body().get(i).getVehicle(),
+                                            response.body().get(i).getRemarks(),
+                                            response.body().get(i).getWarehouse_name(),
+                                            response.body().get(i).getId()
+                                    ));
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -338,11 +371,26 @@ public class BarCodeActivity extends Fragment implements View.OnClickListener, S
     @Override
     public void release() {
         final String scanResult = mBarcodeSparseArray.valueAt(0).displayValue;
-        BaseActivity.editorResult = BaseActivity.dataResult.edit();
-        BaseActivity.editorResult.putString("Result", scanResult);
-        BaseActivity.editorResult.putString("id", "361");
-        BaseActivity.editorResult.commit();
-        intentView(QualityAnalysitActivity.class);
+//
+        mHandler = new Handler(Looper.getMainLooper());
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < arrayList.size(); i++) {
+                    if (arrayList.get(i).getName().equals(scanResult)) {
+                        BaseActivity.editorResult = BaseActivity.dataResult.edit();
+                        BaseActivity.editorResult.putString("Result", scanResult);
+                        BaseActivity.editorResult.putString("id", arrayList.get(i).getId());
+                        BaseActivity.editorResult.commit();
+                        intentView(QualityAnalysitActivity.class);
+                        requestcode ++;
+                    }
+                }
+                if (requestcode == 0) {
+                    Toast.makeText(getContext(), "Mã Barcode Không đúng", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override

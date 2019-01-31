@@ -22,7 +22,8 @@ public class BaseActivity extends AppCompatActivity {
     public static SharedPreferences.Editor editorQuality;
     public static SharedPreferences dataResultgetMobi_app_level;
     public static SharedPreferences.Editor editorgetMobi_app_level;
-
+    public static SharedPreferences dataResultgetStatus;
+    public static SharedPreferences.Editor editorgetStatus;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initEditor();
@@ -32,6 +33,7 @@ public class BaseActivity extends AppCompatActivity {
         dataResultgetMobi_app_level = getSharedPreferences("data_getMobi_app_level", MODE_PRIVATE);
         dataResult = getSharedPreferences("data_Result", MODE_PRIVATE);
         dataResultQuality = getSharedPreferences("data_Quality", MODE_PRIVATE);
+        dataResultgetStatus = getSharedPreferences("data_Status", MODE_PRIVATE);
     }
 
 

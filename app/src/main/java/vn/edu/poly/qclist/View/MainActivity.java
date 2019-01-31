@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener  
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_purchase_list:
-                Toast.makeText(this, "Chưa có chức năng", Toast.LENGTH_SHORT).show();
+                intentView(QCListActivity.class);
                 break;
             case R.id.btn_qc_list:
                 intentView(QCListActivity.class);

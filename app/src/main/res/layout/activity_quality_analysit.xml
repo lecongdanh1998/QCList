@@ -8,10 +8,7 @@
     android:orientation="vertical"
     tools:context=".View.QualityAnalysit.QualityAnalysitActivity">
 
-    <include
-        layout="@layout/custom_toolbar_quality"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <include layout="@layout/custom_toolbar_quality" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -50,130 +47,211 @@
                     android:textSize="@dimen/textLarge" />
 
                 <EditText
-                    android:focusable="false"
                     android:id="@+id/edt_gateId_quality_analysis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textLarge" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout_QCList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/txt_title_mc_quality_analysis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/txt_mc"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/textLarge" />
-
-                <EditText
-                    android:id="@+id/edt_mc_quality_analysis"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/textLarge" />
-            </LinearLayout>
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/txt_title_mc_quality_analysis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/txt_mc"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textLarge" />
+
+                    <EditText
+                        android:id="@+id/edt_mc_quality_analysis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_title_moldy_quality_analysis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/txt_moldy"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textLarge" />
+
+                    <EditText
+                        android:id="@+id/edt_moldy_quality_analysis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_burn_moldy_quality_analysis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/txt_burn"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textLarge" />
+
+                    <EditText
+                        android:id="@+id/edt_burn_quality_analysis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_odor_moldy_quality_analysis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/txt_odor"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textLarge" />
+
+                    <EditText
+                        android:id="@+id/edt_odor_quality_analysis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_remark_moldy_quality_analysis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/txt_remark"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textLarge" />
+
+                    <EditText
+                        android:id="@+id/edt_remark_quality_analysis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textLarge" />
+                </LinearLayout>
+            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout_Purchase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txt_title_moldy_quality_analysis"
+                    android:id="@+id/txt_supplier_quality_analysis"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="@string/txt_moldy"
+                    android:text="Supplier_name"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textLarge" />
 
                 <EditText
-                    android:id="@+id/edt_moldy_quality_analysis"
+                    android:focusable="false"
+                    android:id="@+id/edt_supplier_quality_analysis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textLarge" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txt_burn_moldy_quality_analysis"
+                    android:id="@+id/txt_approx_quantity_quality_analysis"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="@string/txt_burn"
+                    android:text="Approx_quantity"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textLarge" />
 
                 <EditText
-                    android:id="@+id/edt_burn_quality_analysis"
+                    android:focusable="false"
+                    android:id="@+id/edt_approx_quantity_quality_analysis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textLarge" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txt_odor_moldy_quality_analysis"
+                    android:id="@+id/txt_estimated_bags_quality_analysis"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="@string/txt_odor"
+                    android:text="Estimated_bags"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textLarge" />
 
                 <EditText
-                    android:id="@+id/edt_odor_quality_analysis"
+                    android:focusable="false"
+                    android:id="@+id/edt_estimated_bags_quality_analysis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textLarge" />
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txt_remark_moldy_quality_analysis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/txt_remark"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/textLarge" />
-
-                <EditText
-                    android:id="@+id/edt_remark_quality_analysis"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/textLarge" />
-            </LinearLayout>
-
+        </LinearLayout>
             <Button
                 android:id="@+id/btn_approve_quality_analysis"
                 android:layout_width="match_parent"

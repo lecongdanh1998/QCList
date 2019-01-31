@@ -33,6 +33,12 @@ public interface DataClient {
             @Field("remarks") String remarks
     );
 
+    @FormUrlEncoded
+    @POST("/api/search/purchase_approve")
+    Call<Approve> ApproveDataPurchase(
+            @Field("gate_id") String gate_id
+    );
+
     @GET("/api/search/getlist_security")
     Call<ArrayList<Product>> ProductData();
 
