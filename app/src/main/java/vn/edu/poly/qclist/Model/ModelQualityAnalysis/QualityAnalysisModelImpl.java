@@ -27,7 +27,7 @@ public class QualityAnalysisModelImpl implements QualityAnalysisModel {
     }
 
     @Override
-    public void pushBarCodeToSever(onPushBarCodeListener listener, QCApprove mQcApprover) {
+    public void pushBarCodeToSever(final onPushBarCodeListener listener, QCApprove mQcApprover) {
         Call<Approve> mApproveCall = mDataClient.ApproveData(
                 mQcApprover.getGate_id(),
                 mQcApprover.getMc(),

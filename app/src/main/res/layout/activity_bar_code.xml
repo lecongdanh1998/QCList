@@ -7,10 +7,15 @@
     android:focusableInTouchMode="true"
     tools:context=".View.BarcodeActivity.BarCodeActivity">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayoutbarcode"
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/relativeLayoutbarcode"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"></RelativeLayout>-->
+
+    <SurfaceView
+        android:id="@+id/surface_view_barcode"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></RelativeLayout>
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:id="@+id/relativeLayoutEdittext"
